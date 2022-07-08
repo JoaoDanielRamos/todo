@@ -1,0 +1,13 @@
+@use './colors.scss' as *;
+@use './mixins.scss' as *;
+
+.container {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+}
+
+.test {
+  position: absolute;
+  top: 0;
+}
