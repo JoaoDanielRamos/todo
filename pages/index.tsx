@@ -3,12 +3,38 @@ import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/App.module.scss';
 
+import { changeTheme, changeFilter, addTodo } from '../features/todoSlice';
+import { useDispatch, useSelector } from 'react-redux';
+
 import light_theme_mobile_bg from '../assets/bg-mobile-light.jpg';
 import light_theme_desktop_bg from '../assets/bg-desktop-light.jpg';
 import dark_theme_mobile_bg from '../assets/bg-mobile-dark.jpg';
 import dark_theme_desktop_bg from '../assets/bg-desktop-dark.jpg';
 
+import icon_moon from '../assets/icon-moon.svg';
+import icon_sun from '../assets/icon-sun.svg';
+import icon_cross from '../assets/icon-cross.svg';
+import icon_check from '../assets/icon-check.svg';
+import { useEffect, useState } from 'react';
+
 const Home: NextPage = () => {
+  const dispatch = useDispatch();
+  const { todo } = useSelector((state: any) => state);
+
+  const list = todo.value.todos;
+  const theme = todo.value.theme;
+  const filter = todo.value.filter;
+
+  const todoListSize = list.map((item: any) => {
+    if (item.active === false) return 1;
+  }).length;
+
+  const [inputValue, setInputValue] = useState('');
+
+  useEffect(() => {
+    console.log(list, theme, filter);
+  }, []);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -17,13 +43,77 @@ const Home: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <Image
-        className={styles.test}
-        src={light_theme_mobile_bg}
-        alt=''
-        height={200}
-        layout='responsive'
-      />
+      <div className={styles.app}>
+        <div className={styles.header}>
+          <h1 className={styles.logo}>todo</h1>
+          <Image
+            src={icon_moon}
+            alt=''
+            onClick={() => dispatch(changeTheme())}
+          />
+        </div>
+
+        <form
+          className={styles.form}
+          onSubmit={event => {
+            event.preventDefault();
+
+            dispatch(addTodo({ description: inputValue, completed: false }));
+
+            setInputValue('');
+          }}
+        >
+          <div className={styles.mark}></div>
+          <input
+            className={styles.input}
+            type='text'
+            name=''
+            id=''
+            value={inputValue}
+            placeholder='Create a new todo...'
+            onChange={event => {
+              setInputValue(event.target.value);
+            }}
+          />
+        </form>
+
+        <div className={styles.todoContainer}>
+          <ul className={styles.todoList}>
+            {list.map((item, index) => (
+              <li className={styles.todoWrapper} key={index + 1}>
+                <div className={styles.todoItem}>
+                  <div className={styles.todoItemStatus}></div>
+                  <p className={styles.todoItemDescription}>
+                    {item.description}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div className={styles.todoInfo}>
+            <p className={styles.todoInfoDescription}>
+              {todoListSize} {todoListSize > 1 ? 'items' : 'item'} left
+            </p>
+            <button className={styles.todoInfoButton}>Clear Completed</button>
+          </div>
+        </div>
+
+        <div className={styles.filter}>
+          {['All', 'Active', 'Complete'].map((filterOption, index) => (
+            <button
+              key={index + 1}
+              className={
+                filterOption.toLowerCase() === filter
+                  ? `${styles.filterActive}`
+                  : ''
+              }
+              onClick={() => dispatch(changeFilter(filterOption.toLowerCase()))}
+            >
+              {filterOption}
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
