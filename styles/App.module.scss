@@ -69,57 +69,78 @@
     }
   }
 
-  .todoContainer {
+  .toDoContainer {
     width: 100%;
     background-color: #ffffff;
     box-shadow: 0px 35px 50px -15px rgba(194, 195, 214, 0.5);
     border-radius: 5px;
     margin-bottom: 16px;
 
-    .todoWrapper {
+    .toDoWrapper {
       border-bottom: 1px solid $light-theme-very-light-grayish-blue;
     }
 
-    .todoList {
+    .toDoList {
       width: 100%;
     }
 
-    .todoItem {
+    .toDoItem {
       @include display-flex(row, center, none);
       width: 100%;
       height: 3rem;
       padding: 0 1.25rem;
+      cursor: move;
 
-      .todoItemStatus {
+      .toDoItemStatus {
         height: 20px;
         width: 20px;
         border: 2px solid $light-theme-very-light-grayish-blue;
         border-radius: 50%;
         margin-right: 20px;
+        cursor: pointer;
       }
 
-      .todoItemDescription {
+      .toDoItemStatusCompleted {
+        background: $primary-check-background;
+        border: none;
+      }
+
+      .toDoItemDescription {
         color: $dark-theme-very-dark-desaturated-blue;
         font-size: 12px;
       }
+
+      .toDoItemDescriptionCompleted {
+        color: $light-theme-light-grayish-blue;
+        text-decoration: line-through;
+      }
     }
 
-    .todoInfo {
+    .closeButton {
+      @include display-flex(row, center, center);
+      margin-left: auto !important;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    .toDoInfo {
       height: 3rem;
       @include display-flex(row, center, space-between);
       padding: 0 1.25rem;
 
-      .todoInfoDescription {
+      .toDoInfoDescription {
         font-size: 12px;
         color: $dark-theme-dark-grayish-blue;
       }
 
-      .todoInfoButton {
+      .toDoInfoButton {
         font-family: inherit;
         font-size: 12px;
         color: $dark-theme-dark-grayish-blue;
         background-color: transparent;
         border: none;
+        cursor: pointer;
       }
     }
   }
@@ -142,10 +163,18 @@
       font-size: 14px;
       color: $dark-theme-dark-grayish-blue;
       cursor: pointer;
+
+      &:hover {
+        color: $dark-theme-very-dark-blue;
+      }
     }
 
     .filterActive {
       color: $primary-bright-blue;
+
+      &:hover {
+        color: $primary-bright-blue;
+      }
     }
   }
 }
