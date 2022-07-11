@@ -50,7 +50,7 @@ const Home: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      {/* Main App*/}
+      {/* MAIN APP */}
       <div className={styles.app}>
         <div className={styles.header}>
           <h1 className={styles.logo}>toDo</h1>
@@ -150,6 +150,23 @@ const Home: NextPage = () => {
             <p className={styles.toDoInfoDescription}>
               {listOfToDoSize} {listOfToDoSize > 1 ? 'items' : 'item'} left
             </p>
+            <div className={styles.toDoInfoFilter}>
+              {['All', 'Active', 'Completed'].map((filterOption, index) => (
+                <button
+                  key={index + 1}
+                  className={
+                    filterOption.toLowerCase() === filter
+                      ? `${styles.filterActive}`
+                      : ''
+                  }
+                  onClick={() => {
+                    dispatch(changeFilter(filterOption.toLowerCase()));
+                  }}
+                >
+                  {filterOption}
+                </button>
+              ))}
+            </div>
             <button
               className={styles.toDoInfoButton}
               onClick={() => dispatch(clearCompleted())}
@@ -178,6 +195,7 @@ const Home: NextPage = () => {
           ))}
         </div>
       </div>
+
       <ToastContainer
         position='top-right'
         autoClose={2000}
