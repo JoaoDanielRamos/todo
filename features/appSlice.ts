@@ -11,12 +11,10 @@ export const appSlice = createSlice({
   initialState: { value: initialStateValue },
   reducers: {
     changeTheme: (state: any) => {
-      let { theme } = state.value;
-
-      if (theme === 'light') {
-        theme = 'dark';
+      if (state.value.theme === 'light') {
+        state.value.theme = 'dark';
       } else {
-        theme = 'light';
+        state.value.theme = 'light';
       }
     },
     changeFilter: (state: any, action: any) => {
