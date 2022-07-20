@@ -41,8 +41,16 @@ const Home: NextPage = () => {
     })
     .filter((element: any) => element === 1).length;
 
+  const themeCheck = (cssClass: any) => {
+    if (theme === 'light') {
+      return cssClass;
+    } else {
+      return `${cssClass} ${styles.dark}`;
+    }
+  };
+
   return (
-    <div className={styles.container}>
+    <div className={themeCheck(styles.container)}>
       {/* HEAD*/}
       <Head>
         <title>TODO</title>
@@ -55,7 +63,8 @@ const Home: NextPage = () => {
         <div className={styles.header}>
           <h1 className={styles.logo}>toDo</h1>
           <Image
-            src={icon_moon}
+            src={theme === 'light' ? icon_moon : icon_sun}
+            className={styles.themeButton}
             alt=''
             onClick={() => dispatch(changeTheme())}
           />
@@ -63,7 +72,7 @@ const Home: NextPage = () => {
 
         {/* CREATE A NEW TODO */}
         <form
-          className={styles.form}
+          className={themeCheck(styles.form)}
           onSubmit={event => {
             event.preventDefault();
 
@@ -78,14 +87,14 @@ const Home: NextPage = () => {
             setInputValue('');
           }}
         >
-          <div className={styles.mark}></div>
+          <div className={themeCheck(styles.mark)}></div>
           <input
-            className={styles.input}
+            className={themeCheck(styles.input)}
             type='text'
             name=''
             id=''
             value={inputValue}
-            placeholder='Create a new toDo...'
+            placeholder='Create a new todo...'
             onChange={event => {
               setInputValue(event.target.value);
             }}
@@ -93,7 +102,7 @@ const Home: NextPage = () => {
         </form>
 
         {/* LIST OF TODOS */}
-        <div className={styles.toDoContainer}>
+        <div className={themeCheck(styles.toDoContainer)}>
           <ul className={styles.toDoList}>
             {listOfToDos
               .filter((toDo: any) => {
@@ -102,25 +111,34 @@ const Home: NextPage = () => {
                 if (filter === 'completed') return toDo.completed === true;
               })
               .map((item: any, index: number) => (
-                <li className={styles.toDoWrapper} key={index + 1}>
+                <li className={themeCheck(styles.toDoWrapper)} key={index + 1}>
                   <div className={styles.toDoItem} data-id={`${item.id}`}>
-                    <div
-                      className={
-                        item.completed
-                          ? `${styles.toDoItemStatus} ${styles.toDoItemStatusCompleted}`
-                          : styles.toDoItemStatus
-                      }
-                      onClick={() => {
-                        dispatch(completeToDo(item.id));
-                      }}
-                    >
-                      {item.completed && <Image src={icon_check} alt='' />}
+                    <div className={themeCheck(styles.toDoItemStatusWrapper)}>
+                      <div
+                        className={
+                          item.completed
+                            ? `${themeCheck(styles.toDoItemStatus)} ${
+                                styles.toDoItemStatusCompleted
+                              }`
+                            : themeCheck(styles.toDoItemStatus)
+                        }
+                        onClick={() => {
+                          dispatch(completeToDo(item.id));
+                        }}
+                      >
+                        {item.completed && <Image src={icon_check} alt='' />}
+                      </div>
                     </div>
+
                     <p
                       className={
                         item.completed
-                          ? `${styles.toDoItemDescription} ${styles.toDoItemDescriptionCompleted}`
-                          : styles.toDoItemDescription
+                          ? `${themeCheck(
+                              styles.toDoItemDescription
+                            )} ${themeCheck(
+                              styles.toDoItemDescriptionCompleted
+                            )}`
+                          : themeCheck(styles.toDoItemDescription)
                       }
                     >
                       {item.description}
@@ -150,13 +168,13 @@ const Home: NextPage = () => {
             <p className={styles.toDoInfoDescription}>
               {listOfToDoSize} {listOfToDoSize > 1 ? 'items' : 'item'} left
             </p>
-            <div className={styles.toDoInfoFilter}>
+            <div className={themeCheck(styles.toDoInfoFilter)}>
               {['All', 'Active', 'Completed'].map((filterOption, index) => (
                 <button
                   key={index + 1}
                   className={
                     filterOption.toLowerCase() === filter
-                      ? `${styles.filterActive}`
+                      ? `${themeCheck(styles.filterActive)}`
                       : ''
                   }
                   onClick={() => {
@@ -168,7 +186,7 @@ const Home: NextPage = () => {
               ))}
             </div>
             <button
-              className={styles.toDoInfoButton}
+              className={themeCheck(styles.toDoInfoButton)}
               onClick={() => dispatch(clearCompleted())}
             >
               Clear Completed
@@ -177,13 +195,13 @@ const Home: NextPage = () => {
         </div>
 
         {/* FILTER PICK */}
-        <div className={styles.filter}>
+        <div className={themeCheck(styles.filter)}>
           {['All', 'Active', 'Completed'].map((filterOption, index) => (
             <button
               key={index + 1}
               className={
                 filterOption.toLowerCase() === filter
-                  ? `${styles.filterActive}`
+                  ? `${themeCheck(styles.filterActive)}`
                   : ''
               }
               onClick={() => {
